@@ -60,6 +60,10 @@ body {
   font-size: 14px;
 }
 
+.form-control .required {
+  color: #e74c3c;
+}
+
 /* Control color of border upon focus of input  */
 .form-control input:focus {
   outline: 0;

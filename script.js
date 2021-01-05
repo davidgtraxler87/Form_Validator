@@ -36,40 +36,30 @@ function isValidPassword(password) {
   return re.test(String(password).toLowerCase());
 }
 
+function checkRequiredFields(inputArr) {
+  inputArr.forEach((input) => {
+    //input = input.charAt(0).toUpperCase();
+    if (input.value.trim() === '') {
+      showError(input, `${getFieldName(input)} is required`);
+    } else {
+      showSuccess(input);
+    }
+  });
+}
+
+
+function getFieldName(input) {
+  return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+}
+
 //e is an event parameter that includes several properties and methods that can be used
 
-//Event listern for submit button
+//Event listener for submit button
 form.addEventListener('submit', function(e) {
   //prevent the form from submitting
   e.preventDefault();
+
+  //console.log("test");
   
-  if(username.value === '') {
-    showError(username, 'Username is required');
-  } else {
-    showSuccess(username);
-  }
-
-  if(email.value === '') {
-    showError(email, 'Email is required');
-  } else if(!isValidEmail(email.value)) {
-    showError(email, 'Email is not valid.');
-  } else {
-    showSuccess(email);
-  }
-
-  if(password.value === '') {
-    showError(password, 'Password is required');
-  } else if(!isValidEmail(password.value)){
-    showError(password, 'Password is not valid.');
-  } else {
-    showSuccess(password);
-  }
-
-  if(confirm.value === '') {
-    showError(confirm, 'Confirm is required');
-  } else if(password.value !== confirm.value) {
-    showError(confirm, 'Passwords must match.')
-  }else {
-    showSuccess(confirm);
-  }
+  checkRequiredFields([username, email, password, confirm]);
 });
