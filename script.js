@@ -24,16 +24,25 @@ function showSuccess(input) {
   formControl.className = 'form-control success';
 }
 
-function isValidEmail(email) {
+function checkEmail(input) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  return re.test(String(email).toLowerCase());
+  if (re.test(input.value.trim())) {
+    showSuccess(input);
+  } else {
+    showError(input, 'Email is not valid.');
+  }
 }
 
-function isValidPassword(password) {
-  const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-  
-  return re.test(String(password).toLowerCase());
+// function checkPassword(input) {
+//   const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
+//   return re.test(String(input).toLowerCase());
+// }
+
+function checkPasswordsMatch(input1, input2) {
+  if(input1.value !== input2.value) {
+    showError(confirm, 'Passwords must match.');
+  } 
 }
 
 function checkRequiredFields(inputArr) {
@@ -45,6 +54,18 @@ function checkRequiredFields(inputArr) {
       showSuccess(input);
     }
   });
+}
+
+//check input length
+function checkLength(input, min, max) {
+  
+  if(input.value.length < min) {
+    showError(input, `${getFieldName(input)} must be at least ${min} characters.`);
+  } else if (input.value.length > max) {
+    showError(input, `${getFieldName(input)} must be at less than ${max} characters.`);
+  }else {
+    showSuccess(input);
+  }
 }
 
 
@@ -62,4 +83,9 @@ form.addEventListener('submit', function(e) {
   //console.log("test");
   
   checkRequiredFields([username, email, password, confirm]);
+  checkLength(username, 3, 15);
+  checkLength(password, 6, 25);
+  checkEmail(email);
+  //checkPassword(password, confirm);
+  checkPasswordsMatch(password, confirm);
 });
